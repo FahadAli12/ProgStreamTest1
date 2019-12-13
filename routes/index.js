@@ -2,12 +2,17 @@ var express = require('express');
 var router = express.Router();
 const saveMyMoney = require('../saveMyMoney')
 
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
-
-  let numberOfBars = 17;
-  const pricesOfBarPacketBox = [2.30, 25, 230];
-  const quantityOfBarPacketBox = [1, 12, 12 * 10];
+  res.send('hello')
+} )
+router.post('/', function (req, res, next) {
+  let body = req.body;
+  console.log('body', body)
+  let numberOfBars = body.numberOfBars;
+  const pricesOfBarPacketBox = body.pricesOfBarPacketBox;
+  const quantityOfBarPacketBox = body.quantitiesOfBarPacketBox;
 
   function calculateBars(bars, barPacket) {
     return bars % barPacket;
@@ -44,9 +49,11 @@ router.get('/', function (req, res, next) {
       "numberOfBoxes": numOfBoxes,
       "totalCost": cost
     }
+    return payload;
   }
 
-  saveMyMoney(numberOfBars, pricesOfBarPacketBox, quantityOfBarPacketBox)
+  let response = saveMyMoney(numberOfBars, pricesOfBarPacketBox, quantityOfBarPacketBox);
+  res.send(response)
 });
 
 module.exports = router;
